@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+/* Base styles for the demo page content */
+body {
+  transition: font-size 0.2s, letter-spacing 0.2s, line-height 0.2s;
+  min-height: 100vh;
+}
+
+/* Prevent the widget itself from being affected by its own global filters */
+#axs-widget-root {
+  all: initial;
+  font-family: sans-serif;
+}
+
+#axs-widget-root * {
+  box-sizing: border-box;
+}

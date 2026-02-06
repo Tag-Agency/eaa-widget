@@ -1,0 +1,3 @@
+module.exports=[40809,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(65479);a.n(d("[project]/Documents/Siti Headless/eaa-widget/node_modules/next/dist/client/components/builtin/global-error.js <module evaluation>"))},4376,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(65479);a.n(d("[project]/Documents/Siti Headless/eaa-widget/node_modules/next/dist/client/components/builtin/global-error.js"))},86346,a=>{"use strict";a.i(40809);var b=a.i(4376);a.n(b)}];
+
+//# sourceMappingURL=815db_next_dist_client_components_builtin_global-error_ffedf6b6.js.map
