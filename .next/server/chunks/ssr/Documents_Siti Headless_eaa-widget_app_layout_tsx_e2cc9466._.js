@@ -1,3 +1,0 @@
-module.exports=[68665,a=>{"use strict";var b=a.i(21797);function c({children:a}){return(0,b.jsx)("html",{lang:"it",children:(0,b.jsxs)("body",{className:"bg-gray-50 text-gray-900 font-sans",children:[a,(0,b.jsx)("div",{id:"axs-widget-root"})]})})}a.s(["default",()=>c,"metadata",0,{title:"AXS Pro Widget",description:"Design Inclusivo per un Web Senza Barriere"}])}];
-
-//# sourceMappingURL=Documents_Siti%20Headless_eaa-widget_app_layout_tsx_e2cc9466._.js.map
