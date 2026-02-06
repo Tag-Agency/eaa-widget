@@ -17,14 +17,14 @@ You can customize the widget directly in the script URL:
 
 ```html
 <script 
-  src="https://cdn.jsdelivr.net/gh/Tag-Agency/eaa-widget/public/axs-widget.js?primaryColor=ff4081&position=left" 
+  src="https://cdn.jsdelivr.net/gh/Tag-Agency/eaa-widget/public/axs-widget.js?color=ff4081&position=left" 
   data-auto-init="true">
 </script>
 ```
 
 | Parameter | Description | Default | Example |
 |-----------|-------------|---------|---------|
-| `primaryColor` | Hex code of the main color (no #) | `3f51b5` (Indigo) | `ff0000` |
+| `color` | Hex code of the main color (no #) | `3f51b5` (Indigo) | `ff0000` |
 | `position` | Widget position (`left` or `right`) | `right` | `left` |
 
 ## 🛠 Development
