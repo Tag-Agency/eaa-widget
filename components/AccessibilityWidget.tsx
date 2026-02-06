@@ -209,7 +209,7 @@ const AccessibilityWidget: React.FC<WidgetProps> = ({ primaryColor = '#3f51b5', 
             </button>
             <button
               onClick={() => window.print()}
-              className="flex-1 py-4 text-[10px] font-black text-[#3f51b5] hover:text-[#303f9f] bg-blue-50 border border-blue-100 rounded-2xl hover:bg-blue-100 transition-all shadow-sm uppercase tracking-[0.15em]"
+              className="flex-1 py-4 text-[10px] font-black text-gray-500 hover:text-gray-900 bg-blue-50 border border-blue-100 rounded-2xl hover:bg-blue-100 transition-all shadow-sm uppercase tracking-[0.15em]"
             >
               Stampa
             </button>
