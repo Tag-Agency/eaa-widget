@@ -1,20 +1,48 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# AXS Pro Widget - European Accessibility Act
 
-# Run and deploy your AI Studio app
+An accessibility widget built with Next.js and Tailwind CSS, designed to help websites comply with the European Accessibility Act (EAA).
 
-This contains everything you need to run your app locally.
+## 🚀 Quick Embed
+To add the widget to any website, simply include this script tag before the closing `</body>` tag:
 
-View your app in AI Studio: https://ai.studio/apps/temp/1
+```html
+<script 
+  src="https://cdn.jsdelivr.net/gh/Tag-Agency/eaa-widget/public/axs-widget.js" 
+  data-auto-init="true">
+</script>
+```
 
-## Run Locally
+### Customization via URL Parameters
+You can customize the widget directly in the script URL:
 
-**Prerequisites:**  Node.js
+```html
+<script 
+  src="https://cdn.jsdelivr.net/gh/Tag-Agency/eaa-widget/public/axs-widget.js?primaryColor=ff4081&position=left" 
+  data-auto-init="true">
+</script>
+```
 
+| Parameter | Description | Default | Example |
+|-----------|-------------|---------|---------|
+| `primaryColor` | Hex code of the main color (no #) | `3f51b5` (Indigo) | `ff0000` |
+| `position` | Widget position (`left` or `right`) | `right` | `left` |
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## 🛠 Development
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Run development server:**
+   ```bash
+   npm run dev
+   ```
+
+3. **Build standalone widget:**
+   ```bash
+   npm run build:widget
+   ```
+   This generates `public/axs-widget.js`.
+
+## Deployment
+The widget is automatically built and located in the `public` directory. When pushed to GitHub, it can be served via raw GitHub user content or a CDN like jsDelivr.
