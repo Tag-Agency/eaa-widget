@@ -224,7 +224,7 @@ const AccessibilityWidget: React.FC<WidgetProps> = ({ primaryColor = '#3f51b5', 
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`
-          flex items-center justify-center w-16 h-16 rounded-full shadow-2xl transition-all duration-500 
+          flex items-center justify-center w-20 h-20 rounded-full shadow-2xl transition-all duration-500 
           ${isOpen ? 'bg-red-500 rotate-180' : 'hover:scale-110 active:scale-95'}
           text-white ring-4 ring-white ring-offset-2 ring-offset-transparent
         `}
@@ -234,7 +234,7 @@ const AccessibilityWidget: React.FC<WidgetProps> = ({ primaryColor = '#3f51b5', 
         aria-label="Apri menu accessibilità"
         title="Accessibilità"
       >
-        <div className={`transition-transform duration-500 flex items-center justify-center w-10 h-10 ${isOpen ? 'scale-75' : 'scale-110'}`}>
+        <div className={`transition-transform duration-500 flex items-center justify-center w-12 h-12 ${isOpen ? 'scale-75' : 'scale-110'}`}>
           {isOpen ? (
             <Icons.IconClose />
           ) : (
