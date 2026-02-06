@@ -15,7 +15,6 @@ To add the widget to any website, simply include this script tag before the clos
 ### Customization via URL Parameters
 You can customize the widget directly in the script URL:
 
-```html
 <script 
   src="https://cdn.jsdelivr.net/gh/Tag-Agency/eaa-widget/public/axs-widget.js?color=ff4081&position=left" 
   data-auto-init="true">
