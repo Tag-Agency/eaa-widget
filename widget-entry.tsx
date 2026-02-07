@@ -31,6 +31,12 @@ const getScriptParams = () => {
 };
 
 export function initAxsWidget(config: any = {}) {
+    // Ensure body exists
+    if (!document.body) {
+        window.addEventListener('DOMContentLoaded', () => initAxsWidget(config));
+        return;
+    }
+
     // Check if already exists
     if (document.getElementById(WIDGET_ID)) {
         return;
@@ -64,6 +70,7 @@ export function initAxsWidget(config: any = {}) {
     // We can at least ensure local inheritance is clean
     mountPoint.style.fontFamily = 'system-ui, -apple-system, sans-serif';
     mountPoint.style.all = 'initial'; // Reset inherited styles
+    mountPoint.style.display = 'block'; // Ensure it's a block element
     
     shadow.appendChild(mountPoint);
 
