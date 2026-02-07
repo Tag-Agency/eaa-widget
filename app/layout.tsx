@@ -1,9 +1,9 @@
-import './globals.css';
 import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'EAA Widget Preview',
-  description: 'Preview for Accessibility Widget',
+  title: 'Axs Pro - Widget di Accessibilità EAA',
+  description: 'Soluzione completa e gratuita per la conformità al European Accessibility Act (EAA). Widget facile da integrare per ogni sito web.',
 };
 
 export default function RootLayout({
@@ -13,7 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="it">
-      <body>{children}</body>
+      <body className="bg-gray-50 text-gray-900 font-sans antialiased">
+        {children}
+      </body>
     </html>
   );
 }
