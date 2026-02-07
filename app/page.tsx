@@ -82,7 +82,7 @@ export default function Home() {
             <span className="absolute top-3 right-3 text-xs text-slate-400 uppercase tracking-wider">HTML</span>
             <pre className="font-mono text-sm leading-relaxed">
               {`<script 
-  src="https://cdn.jsdelivr.net/gh/Tag-Agency/eaa-widget/public/axs-widget.js?v=1.0" 
+  src="https://cdn.jsdelivr.net/gh/Tag-Agency/eaa-widget@e8f01cab9c1ee4c7ba5ec7da0dd46e60237804c7/public/axs-widget.js" 
   data-auto-init="true"
 ></script>`}
             </pre>
@@ -127,7 +127,7 @@ export default function Home() {
             <div className="bg-slate-800 text-slate-200 p-6 rounded-xl overflow-x-auto shadow-lg">
               <pre className="font-mono text-sm leading-relaxed">
                 {`<script 
-  src="https://cdn.jsdelivr.net/gh/Tag-Agency/eaa-widget/public/axs-widget.js?color=ff4081&position=left&v=1.0" 
+  src="https://cdn.jsdelivr.net/gh/Tag-Agency/eaa-widget@e8f01cab9c1ee4c7ba5ec7da0dd46e60237804c7/public/axs-widget.js?color=ff4081&position=left" 
   data-auto-init="true"
 ></script>`}
               </pre>
