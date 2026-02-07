@@ -108,7 +108,7 @@ export default function Home() {
                   <tr>
                     <td className="p-4 font-mono text-sm text-indigo-600">color</td>
                     <td className="p-4 text-gray-600">Colore primario (esadecimale senza #)</td>
-                    <td className="p-4 text-gray-500 font-mono text-sm">3f51b5</td>
+                    <td className="p-4 text-gray-500 font-mono text-sm">c4ac44</td>
                     <td className="p-4 text-gray-500 font-mono text-sm">color=ff4081</td>
                   </tr>
                   <tr>
@@ -168,7 +168,7 @@ export default function Home() {
       </footer>
 
       {/* Widget Instance (React Component for Dev/Preview) */}
-      <AccessibilityWidget primaryColor="#3f51b5" position="right" />
+      <AccessibilityWidget primaryColor="#c4ac44" position="right" />
     </main>
   );
 }

@@ -13,7 +13,7 @@ interface WidgetProps {
   position?: 'left' | 'right';
 }
 
-const AccessibilityWidget: React.FC<WidgetProps> = ({ primaryColor = '#3f51b5', position = 'right' }) => {
+const AccessibilityWidget: React.FC<WidgetProps> = ({ primaryColor = '#c4ac44', position = 'right' }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [settings, setSettings] = useState<AxsSettings>(DEFAULT_SETTINGS);
   const [isSpeaking, setIsSpeaking] = useState(false);
