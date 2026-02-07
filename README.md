@@ -16,7 +16,7 @@ Per aggiungere il widget al tuo sito, inserisci il seguente script prima della c
 
 ```html
 <script 
-  src="https://cdn.jsdelivr.net/gh/Tag-Agency/eaa-widget/public/axs-widget.js" 
+  src="https://cdn.jsdelivr.net/gh/Tag-Agency/eaa-widget@071931d73195cc1f526b6daef501dbbab4b77d0a/axs-widget.js" 
   data-auto-init="true"
 ></script>
 ```
@@ -27,14 +27,14 @@ Puoi personalizzare il widget modificando i parametri nella query string dell'UR
 
 | Parametro  | Descrizione                                      | Valore Default | Esempio                    |
 |------------|--------------------------------------------------|----------------|----------------------------|
-| `color`    | Colore primario del widget (esadecimale senza #) | `3f51b5`       | `color=ff0000` (Rosso)     |
+| `color`    | Colore primario del widget (esadecimale senza #) | `c4ac44`       | `color=ff0000` (Rosso)     |
 | `position` | Posizione del pulsante e del pannello            | `right`        | `position=left`            |
 
 Esempio completo:
 
 ```html
 <script 
-  src="https://cdn.jsdelivr.net/gh/Tag-Agency/eaa-widget/public/axs-widget.js?color=ff4081&position=left" 
+  src="https://cdn.jsdelivr.net/gh/Tag-Agency/eaa-widget@071931d73195cc1f526b6daef501dbbab4b77d0a/axs-widget.js?color=ff4081&position=left" 
   data-auto-init="true"
 ></script>
 ```
