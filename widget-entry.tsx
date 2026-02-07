@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import AccessibilityWidget from './components/AccessibilityWidget';
-import './app/globals.css'; // Import styles to be bundled
+// @ts-ignore
+import styles from './app/globals.css?inline';
 
 const WIDGET_ID = 'axs-pro-widget-container';
 
@@ -35,13 +36,39 @@ export function initAxsWidget(config: any = {}) {
         return;
     }
 
-    // Create container
-    const container = document.createElement('div');
-    container.id = WIDGET_ID;
-    document.body.appendChild(container);
+    // Create Host Element
+    const host = document.createElement('div');
+    host.id = WIDGET_ID;
+    // Ensure host is on top of everything but doesn't block clicks when empty
+    host.style.position = 'absolute';
+    host.style.zIndex = '2147483647'; // Max z-index
+    host.style.top = '0';
+    host.style.left = '0';
+    host.style.width = '0';
+    host.style.height = '0';
+    
+    document.body.appendChild(host);
+
+    // Create Shadow DOM
+    const shadow = host.attachShadow({ mode: 'open' });
+
+    // Inject Styles
+    const styleTag = document.createElement('style');
+    styleTag.textContent = styles;
+    shadow.appendChild(styleTag);
+
+    // Create Mount Point
+    const mountPoint = document.createElement('div');
+    mountPoint.id = 'axs-mount-point';
+    // Reset font size to avoid rem scaling issues if possible, though rem comes from html
+    // We can at least ensure local inheritance is clean
+    mountPoint.style.fontFamily = 'system-ui, -apple-system, sans-serif';
+    mountPoint.style.all = 'initial'; // Reset inherited styles
+    
+    shadow.appendChild(mountPoint);
 
     // Mount React
-    const root = ReactDOM.createRoot(container);
+    const root = ReactDOM.createRoot(mountPoint);
     root.render(
         <React.StrictMode>
             <AccessibilityWidget {...config} />

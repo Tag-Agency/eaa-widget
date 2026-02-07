@@ -6,7 +6,7 @@ import path from 'path';
 export default defineConfig({
     plugins: [
         react(),
-        cssInjectedByJsPlugin(), // Bundles CSS into the JS file
+        // cssInjectedByJsPlugin(), // Removed to handle CSS manually in Shadow DOM
     ],
     build: {
         outDir: 'public', // Output to public so Next.js serves it statically
