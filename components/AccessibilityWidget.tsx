@@ -80,28 +80,36 @@ const AccessibilityWidget: React.FC<WidgetProps> = ({ primaryColor = '#3f51b5', 
     >
       {/* Panel */}
       {isOpen && (
-        <div
-          className="mb-3 bg-white rounded-[2rem] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.4)] border border-gray-100 w-[480px] max-w-[92vw] max-h-[calc(100vh-140px)] overflow-hidden flex flex-col animate-in slide-in-from-bottom-6 fade-in duration-500"
-          role="dialog"
-          aria-label="Menu Accessibilità"
-        >
-          {/* Header - Fixed */}
-          <div className="p-7 text-white flex items-center justify-between shrink-0 z-10" style={{ backgroundColor: primaryColor }}>
-            <div>
-              <h2 className="text-xl font-black tracking-tight uppercase leading-none mb-1">Centro Accessibilità</h2>
-              <p className="text-xs opacity-70 font-medium italic">Strumenti di assistenza digitale</p>
+        <>
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[9998] animate-in fade-in duration-300"
+            onClick={() => setIsOpen(false)}
+            aria-hidden="true"
+          />
+          
+          {/* Bottom Sheet */}
+          <div
+            className={`fixed bottom-0 ${position === 'left' ? 'left-4' : 'right-4'} bg-white rounded-t-[2rem] shadow-[0_-10px_40px_rgba(0,0,0,0.15)] border-t border-gray-100 w-[480px] max-w-[92vw] max-h-[85vh] overflow-hidden flex flex-col animate-in slide-in-from-bottom-full duration-500 z-[9999]`}
+            role="dialog"
+            aria-label="Menu Accessibilità"
+            aria-modal="true"
+          >
+            {/* Header */}
+            <div className="p-4 text-white flex items-center justify-between shrink-0 relative" style={{ backgroundColor: primaryColor }}>
+              <h2 className="text-sm font-bold tracking-wider uppercase pl-2">Centro Accessibilità</h2>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-2 hover:bg-white/20 rounded-full transition-all hover:rotate-90 active:scale-90"
+                aria-label="Chiudi menu"
+              >
+                <Icons.IconClose />
+              </button>
             </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="p-3 hover:bg-white/20 rounded-full transition-all hover:rotate-90 active:scale-90"
-              aria-label="Chiudi menu"
-            >
-              <Icons.IconClose />
-            </button>
-          </div>
 
-          {/* Grid - Scrollable area */}
-          <div className="flex-1 overflow-y-auto p-6 grid grid-cols-2 gap-5 bg-gray-50/80 custom-scrollbar">
+            {/* Grid - Scrollable area */}
+            <div className="flex-1 overflow-y-auto p-6 bg-gray-50/80 custom-scrollbar">
+              <div className="grid grid-cols-2 gap-5">
             <AxsCard
               label="Leggi Pagina"
               icon={<Icons.IconSpeaker />}
@@ -197,6 +205,7 @@ const AccessibilityWidget: React.FC<WidgetProps> = ({ primaryColor = '#3f51b5', 
               valueLabel={['B/N', 'Normale', 'Alta'][settings.saturation]}
               onClick={() => updateSetting('saturation', ((settings.saturation + 1) % 3) as any)}
             />
+            </div>
           </div>
 
           {/* Footer - Fixed */}
@@ -215,17 +224,26 @@ const AccessibilityWidget: React.FC<WidgetProps> = ({ primaryColor = '#3f51b5', 
             </button>
           </div>
           <div className="py-3 text-center bg-gray-50 text-[9px] text-gray-400 font-black tracking-[0.25em] uppercase border-t border-gray-100 shrink-0">
-            Vento Adv | European Accessibility Act
+            European Accessibility Act
           </div>
         </div>
+        </>
       )}
 
       {/* Floating Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
+        tabIndex={0}
+        role="button"
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setIsOpen(!isOpen);
+          }
+        }}
         className={`
-          flex items-center justify-center w-20 h-20 rounded-full shadow-2xl transition-all duration-500 
-          ${isOpen ? 'bg-red-500 rotate-180' : 'hover:scale-110 active:scale-95'}
+          flex items-center justify-center w-14 h-14 rounded-full shadow-2xl transition-all duration-500 
+          ${isOpen ? 'scale-0 opacity-0 pointer-events-none' : 'hover:scale-110 active:scale-95 scale-100 opacity-100'}
           text-white ring-4 ring-white ring-offset-2 ring-offset-transparent
         `}
         style={{ backgroundColor: !isOpen ? primaryColor : undefined }}
@@ -234,11 +252,13 @@ const AccessibilityWidget: React.FC<WidgetProps> = ({ primaryColor = '#3f51b5', 
         aria-label="Apri menu accessibilità"
         title="Accessibilità"
       >
-        <div className={`transition-transform duration-500 flex items-center justify-center w-12 h-12 ${isOpen ? 'scale-75' : 'scale-110'}`}>
+        <div className={`transition-transform duration-500 flex items-center justify-center w-full h-full ${isOpen ? 'scale-75' : 'scale-110'}`}>
           {isOpen ? (
             <Icons.IconClose />
           ) : (
-            <Icons.IconAxs />
+            <div className="scale-125">
+              <Icons.IconAxs />
+            </div>
           )}
         </div>
       </button>

@@ -13,7 +13,9 @@ const AxsCard: React.FC<AxsCardProps> = ({ label, icon, isActive, valueLabel, on
   return (
     <button
       onClick={onClick}
-      aria-pressed={isActive}
+      aria-pressed={isActive ? "true" : "false"}
+      tabIndex={0}
+      role="button"
       className={`
         flex flex-col items-center justify-between p-5 rounded-3xl border-2 transition-all duration-300
         ${isActive

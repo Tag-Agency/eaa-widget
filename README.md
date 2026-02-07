@@ -1,47 +1,54 @@
-# AXS Pro Widget - European Accessibility Act
+# Axs Pro Accessibility Widget
 
-An accessibility widget built with Next.js and Tailwind CSS, designed to help websites comply with the European Accessibility Act (EAA).
+Widget di accessibilità conforme al European Accessibility Act (EAA), progettato per essere facilmente integrato in qualsiasi sito web.
 
-## 🚀 Quick Embed
-To add the widget to any website, simply include this script tag before the closing `</body>` tag:
+## Caratteristiche
+
+- **Conforme EAA**: Include strumenti essenziali come contrasto elevato, testo grande, font per dislessia, e altro.
+- **Navigazione da Tastiera**: Completamente accessibile e navigabile tramite tastiera (Tab, Invio, Spazio).
+- **Screen Reader Friendly**: Supporto completo per ARIA roles e stati (aria-pressed, aria-expanded).
+- **Design Moderno**: Interfaccia pulita, responsive e non intrusiva (bottom sheet).
+- **Leggero e Veloce**: Bundle unico ottimizzato.
+
+## Installazione
+
+Per aggiungere il widget al tuo sito, inserisci il seguente script prima della chiusura del tag `</body>`:
 
 ```html
 <script 
   src="https://cdn.jsdelivr.net/gh/Tag-Agency/eaa-widget/public/axs-widget.js" 
-  data-auto-init="true">
-</script>
+  data-auto-init="true"
+></script>
 ```
 
-### Customization via URL Parameters
-You can customize the widget directly in the script URL:
+### Parametri di Configurazione
 
+Puoi personalizzare il widget modificando i parametri nella query string dell'URL dello script:
+
+| Parametro  | Descrizione                                      | Valore Default | Esempio                    |
+|------------|--------------------------------------------------|----------------|----------------------------|
+| `color`    | Colore primario del widget (esadecimale senza #) | `3f51b5`       | `color=ff0000` (Rosso)     |
+| `position` | Posizione del pulsante e del pannello            | `right`        | `position=left`            |
+
+Esempio completo:
+
+```html
 <script 
   src="https://cdn.jsdelivr.net/gh/Tag-Agency/eaa-widget/public/axs-widget.js?color=ff4081&position=left" 
-  data-auto-init="true">
-</script>
+  data-auto-init="true"
+></script>
 ```
 
-| Parameter | Description | Default | Example |
-|-----------|-------------|---------|---------|
-| `color` | Hex code of the main color (no #) | `3f51b5` (Indigo) | `ff0000` |
-| `position` | Widget position (`left` or `right`) | `right` | `left` |
+## Sviluppo Locale
 
-## 🛠 Development
-1. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+1.  Clona il repository
+2.  Installa le dipendenze: `npm install`
+3.  Avvia il server di sviluppo: `npm run dev`
 
-2. **Run development server:**
-   ```bash
-   npm run dev
-   ```
+## Build per Produzione
 
-3. **Build standalone widget:**
-   ```bash
-   npm run build:widget
-   ```
-   This generates `public/axs-widget.js`.
+Per generare il file `axs-widget.js` aggiornato nella cartella `public/`:
 
-## Deployment
-The widget is automatically built and located in the `public` directory. When pushed to GitHub, it can be served via raw GitHub user content or a CDN like jsDelivr.
+```bash
+npm run build:widget
+```
