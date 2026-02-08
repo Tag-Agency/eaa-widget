@@ -5,7 +5,7 @@ Widget di accessibilità conforme al European Accessibility Act (EAA), progettat
 ## Caratteristiche
 
 - **Conforme EAA**: Include strumenti essenziali come contrasto elevato, testo grande, font per dislessia, e altro.
-- **Navigazione da Tastiera**: Completamente accessibile e navigabile tramite tastiera (Tab, Invio, Spazio).
+- **Navigazione da Tastiera**: Completamente accessibile e navigabile tramite tastiera. Usa `Ctrl+U` per aprire/chiudere il widget rapidamente.
 - **Screen Reader Friendly**: Supporto completo per ARIA roles e stati (aria-pressed, aria-expanded).
 - **Design Moderno**: Interfaccia pulita, responsive e non intrusiva (bottom sheet).
 - **Leggero e Veloce**: Bundle unico ottimizzato.

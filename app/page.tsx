@@ -53,7 +53,7 @@ export default function Home() {
                 </svg>
               </div>
               <h3 className="text-xl font-semibold mb-3">Navigazione Tastiera</h3>
-              <p className="text-gray-600">Supporto completo per la navigazione tramite tastiera (Tab, Invio, Spazio) e focus management.</p>
+              <p className="text-gray-600">Supporto completo per la navigazione tramite tastiera. Usa la scorciatoia <strong>Ctrl+U</strong> per un accesso immediato.</p>
             </div>
 
             {/* Feature 3 */}

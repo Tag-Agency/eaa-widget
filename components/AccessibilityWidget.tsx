@@ -53,30 +53,71 @@ const AccessibilityWidget: React.FC<WidgetProps> = ({ primaryColor = '#c4ac44', 
       window.speechSynthesis.cancel();
       setIsSpeaking(false);
     } else {
-      const text = document.body.innerText;
+      // Try to read main content first, fallback to body
+      const contentEl = document.querySelector('main') || document.querySelector('article') || document.body;
+      const text = (contentEl as HTMLElement).innerText;
+
+      if (!text.trim()) return;
+
       const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'it-IT'; // Force Italian
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+
+      // Try to select an Italian voice
+      const setVoice = () => {
+        const voices = window.speechSynthesis.getVoices();
+        const itVoice = voices.find(v => v.lang.includes('it-IT') || v.lang.includes('it_IT')) || voices.find(v => v.lang.startsWith('it'));
+        if (itVoice) {
+          utterance.voice = itVoice;
+        }
+      };
+
+      if (window.speechSynthesis.getVoices().length === 0) {
+        window.speechSynthesis.onvoiceschanged = setVoice;
+      } else {
+        setVoice();
+      }
+
       utterance.onend = () => setIsSpeaking(false);
-      utterance.onerror = () => setIsSpeaking(false);
-      window.speechSynthesis.speak(utterance);
-      setIsSpeaking(true);
+      utterance.onerror = (e) => {
+        // Ignore 'canceled' or 'interrupted' errors which are expected during toggling
+        if (e.error === 'canceled' || e.error === 'interrupted') {
+          setIsSpeaking(false);
+          return;
+        }
+        console.error('TTS Error details:', { error: e.error, event: e });
+        setIsSpeaking(false);
+      };
+      
+      window.speechSynthesis.cancel(); // Safety cancel
+      // Small timeout to ensure cancel is processed
+      setTimeout(() => {
+        window.speechSynthesis.speak(utterance);
+        setIsSpeaking(true);
+      }, 50);
     }
   };
 
-  // Keyboard support: Close on Escape
+  // Keyboard support: Close on Escape, Toggle on Ctrl+U
   useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setIsOpen(false);
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'u') {
+        e.preventDefault();
+        setIsOpen(prev => !prev);
+      }
     };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   if (!mounted) return null;
 
   return (
     <div
-      className={`fixed bottom-4 z-[9999] flex flex-col ${position === 'left' ? 'left-4 items-start' : 'right-4 items-end'}`}
-      style={{ '--axs-primary': primaryColor } as React.CSSProperties}
+      className={`fixed bottom-4 z-[9999] flex flex-col font-sans ${position === 'left' ? 'left-4 items-start' : 'right-4 items-end'}`}
+      style={{ '--axs-primary': primaryColor, fontFamily: 'system-ui, -apple-system, sans-serif' } as React.CSSProperties}
     >
       {/* Panel */}
       {isOpen && (
@@ -109,138 +150,146 @@ const AccessibilityWidget: React.FC<WidgetProps> = ({ primaryColor = '#c4ac44', 
 
             {/* Grid - Scrollable area */}
             <div className="flex-1 overflow-y-auto p-6 bg-gray-50/80 custom-scrollbar">
-              <div className="grid grid-cols-2 gap-5">
-            <AxsCard
-              label="Leggi Pagina"
-              icon={<Icons.IconSpeaker />}
-              isActive={isSpeaking}
-              onClick={handleTTS}
-              valueLabel={isSpeaking ? "Attivo" : "Disattivo"}
-            />
-            <AxsCard
-              label="Contrasto +"
-              icon={<Icons.IconContrast />}
-              isActive={settings.contrastPlus}
-              onClick={() => updateSetting('contrastPlus', !settings.contrastPlus)}
-              valueLabel={settings.contrastPlus ? "Attivo" : "Disattivo"}
-            />
-            <AxsCard
-              label="Smart Contrast"
-              icon={<Icons.IconContrast />}
-              isActive={settings.smartContrast}
-              onClick={() => updateSetting('smartContrast', !settings.smartContrast)}
-              valueLabel={settings.smartContrast ? "Attivo" : "Disattivo"}
-            />
-            <AxsCard
-              label="Evidenzia Link"
-              icon={<Icons.IconLink />}
-              isActive={settings.highlightLinks}
-              onClick={() => updateSetting('highlightLinks', !settings.highlightLinks)}
-              valueLabel={settings.highlightLinks ? "Attivo" : "Disattivo"}
-            />
-            <AxsCard
-              label="Testo Grande"
-              icon={<Icons.IconText />}
-              isActive={settings.textSize > 0}
-              valueLabel={`${(settings.textSize + 1) * 100}%`}
-              onClick={() => updateSetting('textSize', ((settings.textSize + 1) % 4) as any)}
-            />
-            <AxsCard
-              label="Spaziatura Testo"
-              icon={<Icons.IconSpacing />}
-              isActive={settings.textSpacing}
-              onClick={() => updateSetting('textSpacing', !settings.textSpacing)}
-              valueLabel={settings.textSpacing ? "Attivo" : "Disattivo"}
-            />
-            <AxsCard
-              label="Ferma Animazioni"
-              icon={<Icons.IconAnimation />}
-              isActive={settings.stopAnimations}
-              onClick={() => updateSetting('stopAnimations', !settings.stopAnimations)}
-              valueLabel={settings.stopAnimations ? "Fermate" : "Attive"}
-            />
-            <AxsCard
-              label="Nascondi Immagini"
-              icon={<Icons.IconImage />}
-              isActive={settings.hideImages}
-              onClick={() => updateSetting('hideImages', !settings.hideImages)}
-              valueLabel={settings.hideImages ? "Nascoste" : "Visibili"}
-            />
-            <AxsCard
-              label="Font Dislessia"
-              icon={<Icons.IconDyslexia />}
-              isActive={settings.dyslexiaFriendly}
-              onClick={() => updateSetting('dyslexiaFriendly', !settings.dyslexiaFriendly)}
-              valueLabel={settings.dyslexiaFriendly ? "Attivo" : "Disattivo"}
-            />
-            <AxsCard
-              label="Cursore Grande"
-              icon={<Icons.IconCursor />}
-              isActive={settings.bigCursor}
-              onClick={() => updateSetting('bigCursor', !settings.bigCursor)}
-              valueLabel={settings.bigCursor ? "Attivo" : "Disattivo"}
-            />
-            <AxsCard
-              label="Interlinea"
-              icon={<Icons.IconLineHeight />}
-              isActive={settings.lineHeight > 0}
-              valueLabel={['Normale', 'Ampia', 'Extra'][settings.lineHeight]}
-              onClick={() => updateSetting('lineHeight', ((settings.lineHeight + 1) % 3) as any)}
-            />
-            <AxsCard
-              label="Allineamento"
-              icon={<Icons.IconAlign />}
-              isActive={settings.textAlign !== 'default'}
-              valueLabel={settings.textAlign === 'default' ? 'Default' : settings.textAlign.toUpperCase()}
-              onClick={() => {
-                const alignMap: AxsSettings['textAlign'][] = ['default', 'left', 'center', 'right', 'justify'];
-                const nextIdx = (alignMap.indexOf(settings.textAlign) + 1) % alignMap.length;
-                updateSetting('textAlign', alignMap[nextIdx]);
-              }}
-            />
-            <AxsCard
-              label="Saturazione"
-              icon={<Icons.IconSaturation />}
-              isActive={settings.saturation !== 1}
-              valueLabel={['B/N', 'Normale', 'Alta'][settings.saturation]}
-              onClick={() => updateSetting('saturation', ((settings.saturation + 1) % 3) as any)}
-            />
+              
+              {/* Visivo */}
+              <div className="mb-6">
+                <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 ml-1">Visivo</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <AxsCard
+                    label="Contrasto +"
+                    icon={<Icons.IconContrast />}
+                    isActive={settings.contrastPlus}
+                    onClick={() => updateSetting('contrastPlus', !settings.contrastPlus)}
+                    valueLabel={settings.contrastPlus ? "Attivo" : "Disattivo"}
+                  />
+                  <AxsCard
+                    label="Saturazione"
+                    icon={<Icons.IconSaturation />}
+                    isActive={settings.saturation !== 1}
+                    valueLabel={['B/N', 'Normale', 'Alta'][settings.saturation]}
+                    onClick={() => updateSetting('saturation', ((settings.saturation + 1) % 3) as any)}
+                  />
+                  <AxsCard
+                    label="Nascondi Immagini"
+                    icon={<Icons.IconImage />}
+                    isActive={settings.hideImages}
+                    onClick={() => updateSetting('hideImages', !settings.hideImages)}
+                    valueLabel={settings.hideImages ? "Nascoste" : "Visibili"}
+                  />
+                  <AxsCard
+                    label="Ferma Animazioni"
+                    icon={<Icons.IconAnimation />}
+                    isActive={settings.stopAnimations}
+                    onClick={() => updateSetting('stopAnimations', !settings.stopAnimations)}
+                    valueLabel={settings.stopAnimations ? "Fermate" : "Attive"}
+                  />
+                </div>
+              </div>
+
+              {/* Testo */}
+              <div className="mb-6">
+                <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 ml-1">Testo</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <AxsCard
+                    label="Testo Grande"
+                    icon={<Icons.IconText />}
+                    isActive={settings.textSize > 0}
+                    valueLabel={`${(settings.textSize + 1) * 100}%`}
+                    onClick={() => updateSetting('textSize', ((settings.textSize + 1) % 4) as any)}
+                  />
+                  <AxsCard
+                    label="Interlinea"
+                    icon={<Icons.IconLineHeight />}
+                    isActive={settings.lineHeight > 0}
+                    valueLabel={['Normale', 'Ampia', 'Extra'][settings.lineHeight]}
+                    onClick={() => updateSetting('lineHeight', ((settings.lineHeight + 1) % 3) as any)}
+                  />
+                  <AxsCard
+                    label="Allineamento"
+                    icon={<Icons.IconAlign />}
+                    isActive={settings.textAlign !== 'default'}
+                    valueLabel={settings.textAlign === 'default' ? 'Default' : settings.textAlign.toUpperCase()}
+                    onClick={() => {
+                      const alignMap: AxsSettings['textAlign'][] = ['default', 'left', 'center', 'right', 'justify'];
+                      const nextIdx = (alignMap.indexOf(settings.textAlign) + 1) % alignMap.length;
+                      updateSetting('textAlign', alignMap[nextIdx]);
+                    }}
+                  />
+                  <AxsCard
+                    label="Font Dislessia"
+                    icon={<Icons.IconDyslexia />}
+                    isActive={settings.dyslexiaFriendly}
+                    onClick={() => updateSetting('dyslexiaFriendly', !settings.dyslexiaFriendly)}
+                    valueLabel={settings.dyslexiaFriendly ? "Attivo" : "Disattivo"}
+                  />
+                  <AxsCard
+                    label="Spaziatura Testo"
+                    icon={<Icons.IconSpacing />}
+                    isActive={settings.textSpacing}
+                    onClick={() => updateSetting('textSpacing', !settings.textSpacing)}
+                    valueLabel={settings.textSpacing ? "Attivo" : "Disattivo"}
+                  />
+                </div>
+              </div>
+
+              {/* Orientamento */}
+              <div className="mb-6">
+                <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 ml-1">Orientamento</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <AxsCard
+                    label="Evidenzia Link"
+                    icon={<Icons.IconLink />}
+                    isActive={settings.highlightLinks}
+                    onClick={() => updateSetting('highlightLinks', !settings.highlightLinks)}
+                    valueLabel={settings.highlightLinks ? "Attivo" : "Disattivo"}
+                  />
+                  <AxsCard
+                    label="Smart Contrast"
+                    icon={<Icons.IconContrast />}
+                    isActive={settings.smartContrast}
+                    onClick={() => updateSetting('smartContrast', !settings.smartContrast)}
+                    valueLabel={settings.smartContrast ? "Attivo" : "Disattivo"}
+                  />
+                  <AxsCard
+                    label="Cursore Grande"
+                    icon={<Icons.IconCursor />}
+                    isActive={settings.bigCursor}
+                    onClick={() => updateSetting('bigCursor', !settings.bigCursor)}
+                    valueLabel={settings.bigCursor ? "Attivo" : "Disattivo"}
+                  />
+                  <AxsCard
+                    label="Leggi Pagina"
+                    icon={<Icons.IconSpeaker />}
+                    isActive={isSpeaking}
+                    onClick={handleTTS}
+                    valueLabel={isSpeaking ? "Attivo" : "Disattivo"}
+                  />
+                </div>
+              </div>
+
+            </div>
+
+            {/* Footer - Fixed */}
+            <div className="p-7 bg-white border-t border-gray-100 flex gap-4 shrink-0">
+              <button
+                onClick={resetAll}
+                className="flex-1 py-4 text-[10px] font-black text-gray-400 hover:text-gray-900 bg-gray-50 border border-gray-200 rounded-2xl hover:bg-gray-100 transition-all shadow-sm uppercase tracking-[0.15em]"
+              >
+                Reset
+              </button>
+            </div>
+            <div className="py-3 text-center bg-gray-50 text-[9px] text-gray-400 font-black tracking-[0.25em] uppercase border-t border-gray-100 shrink-0">
+              European Accessibility Act
             </div>
           </div>
-
-          {/* Footer - Fixed */}
-          <div className="p-7 bg-white border-t border-gray-100 flex gap-4 shrink-0">
-            <button
-              onClick={resetAll}
-              className="flex-1 py-4 text-[10px] font-black text-gray-400 hover:text-gray-900 bg-gray-50 border border-gray-200 rounded-2xl hover:bg-gray-100 transition-all shadow-sm uppercase tracking-[0.15em]"
-            >
-              Reset
-            </button>
-            <button
-              onClick={() => window.print()}
-              className="flex-1 py-4 text-[10px] font-black text-gray-500 hover:text-gray-900 bg-blue-50 border border-blue-100 rounded-2xl hover:bg-blue-100 transition-all shadow-sm uppercase tracking-[0.15em]"
-            >
-              Stampa
-            </button>
-          </div>
-          <div className="py-3 text-center bg-gray-50 text-[9px] text-gray-400 font-black tracking-[0.25em] uppercase border-t border-gray-100 shrink-0">
-            European Accessibility Act
-          </div>
-        </div>
         </>
       )}
 
       {/* Floating Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        tabIndex={0}
+        tabIndex={-1}
         role="button"
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            setIsOpen(!isOpen);
-          }
-        }}
         className={`
           flex items-center justify-center w-14 h-14 rounded-full shadow-2xl transition-all duration-500 
           ${isOpen ? 'scale-0 opacity-0 pointer-events-none' : 'hover:scale-110 active:scale-95 scale-100 opacity-100'}
@@ -249,8 +298,8 @@ const AccessibilityWidget: React.FC<WidgetProps> = ({ primaryColor = '#c4ac44', 
         style={{ backgroundColor: !isOpen ? primaryColor : undefined }}
         aria-expanded={isOpen}
 
-        aria-label="Apri menu accessibilità"
-        title="Accessibilità"
+        aria-label="Apri menu accessibilità (Premi Ctrl+U)"
+        title="Accessibilità (Ctrl+U)"
       >
         <div className={`transition-transform duration-500 flex items-center justify-center w-full h-full ${isOpen ? 'scale-75' : 'scale-110'}`}>
           {isOpen ? (
