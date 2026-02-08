@@ -16,7 +16,7 @@ Per aggiungere il widget al tuo sito, inserisci il seguente script prima della c
 
 ```html
 <script 
-  src="https://cdn.jsdelivr.net/gh/Tag-Agency/eaa-widget@071931d73195cc1f526b6daef501dbbab4b77d0a/axs-widget.js" 
+  src="https://cdn.jsdelivr.net/gh/Tag-Agency/eaa-widget@854e155680f1ef244a7c3ff0eda8647e1c099676/axs-widget.js" 
   data-auto-init="true"
 ></script>
 ```
@@ -34,7 +34,7 @@ Esempio completo:
 
 ```html
 <script 
-  src="https://cdn.jsdelivr.net/gh/Tag-Agency/eaa-widget@071931d73195cc1f526b6daef501dbbab4b77d0a/axs-widget.js?color=ff4081&position=left" 
+  src="https://cdn.jsdelivr.net/gh/Tag-Agency/eaa-widget@854e155680f1ef244a7c3ff0eda8647e1c099676/axs-widget.js?color=ff4081&position=left" 
   data-auto-init="true"
 ></script>
 ```
